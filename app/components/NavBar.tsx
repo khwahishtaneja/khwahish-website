@@ -1,5 +1,18 @@
 "use client";
 
+// ── NAV LINK AUDIT (Phase 1, 2026-06-09) ────────────────────────────────────
+// All nav links verified against app/ routes:
+//   /about           → app/about/page.tsx          ✓ exists
+//   /services        → app/services/page.tsx        ✓ exists
+//   /resources       → app/resources/page.tsx       ✓ exists
+//   /#checklist      → homepage anchor              ✓ exists
+//   cal.com booking  → external URL                 ✓ confirmed
+//   linkedin         → external URL                 ✓ confirmed
+// "For Institutions" is NOT in the nav (only on homepage gateway cards;
+//   app/for-institutions/page.tsx exists and is linked from page.tsx directly).
+// No links removed or disabled.
+// ────────────────────────────────────────────────────────────────────────────
+
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
@@ -215,7 +228,7 @@ export default function NavBar() {
             <Link
               href="/about"
               onClick={closeAll}
-              className="text-cream/80 text-sm font-medium py-1.5"
+              className="block text-cream/80 text-sm font-medium py-3 min-h-[44px] flex items-center"
             >
               About
             </Link>
@@ -229,7 +242,7 @@ export default function NavBar() {
                   key={link.href}
                   href={link.href}
                   onClick={closeAll}
-                  className="block text-cream/75 text-sm font-medium py-1.5 pl-3"
+                  className="block text-cream/75 text-sm font-medium py-3 min-h-[44px] flex items-center pl-3"
                 >
                   {link.label}
                 </Link>
@@ -239,7 +252,7 @@ export default function NavBar() {
             <Link
               href="/#checklist"
               onClick={closeAll}
-              className="text-cream/80 text-sm font-medium py-1.5"
+              className="block text-cream/80 text-sm font-medium py-3 min-h-[44px] flex items-center"
             >
               Free Checklist
             </Link>
@@ -249,7 +262,7 @@ export default function NavBar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeAll}
-              className="inline-flex items-center gap-2 text-cream/80 text-sm font-medium py-1.5"
+              className="inline-flex items-center gap-2 text-cream/80 text-sm font-medium py-3 min-h-[44px]"
             >
               <LinkedInIcon className="w-4 h-4" />
               LinkedIn

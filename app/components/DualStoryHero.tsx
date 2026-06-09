@@ -305,6 +305,13 @@ export default function DualStoryHero() {
           .hero-center-bridge {
             display: none !important;
           }
+          /* On mobile the content can exceed 100vh; switch to flex-start so
+             justify-content:center doesn't push items out of view, and add
+             bottom clearance for the sticky CTA bar (~60px). */
+          #hero {
+            justify-content: flex-start !important;
+            padding-bottom: 5rem !important;
+          }
         }
       `}</style>
 
@@ -319,7 +326,6 @@ export default function DualStoryHero() {
           justifyContent: "center",
           padding: "5rem 1.25rem 4rem",
           position: "relative",
-          overflow: "hidden",
         }}
       >
         {/* Subtle radial glow behind content */}
