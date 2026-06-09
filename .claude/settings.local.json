@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh)",
-      "Bash(bash)"
+      "Bash(bash)",
+      "Bash(cp ~/Downloads/headshot.png /Users/khwahishtaneja/khwahish-website/public/khwahish.png)",
+      "Bash(cp ~/Downloads/khwahish-taneja-website-strategy.md /Users/khwahishtaneja/khwahish-website/khwahish-taneja-website-strategy.md)",
+      "Bash(curl *)",
+      "Bash(~/.nvm/versions/node/v24.16.0/bin/node *)",
+      "Bash(PATH=\"$HOME/.nvm/versions/node/v24.16.0/bin:$PATH\" node_modules/.bin/next dev *)",
+      "Bash(/usr/local/bin/npm install *)",
+      "Bash(/Users/khwahishtaneja/.nvm/versions/node/v24.16.0/bin/npm install *)",
+      "Bash(npm run *)"
     ]
   }
 }
