@@ -1,50 +1,7 @@
-import { readFileSync } from "fs";
-import { join } from "path";
 import TestimonialForm from "../components/TestimonialForm";
-
-export const dynamic = "force-dynamic";
-
-interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  rating: number;
-  review: string;
-  approved: boolean;
-  createdAt: string;
-}
-
-function getApprovedTestimonials(): Testimonial[] {
-  try {
-    const raw = readFileSync(join(process.cwd(), "data/testimonials.json"), "utf-8");
-    const all: Testimonial[] = JSON.parse(raw);
-    return all.filter((t) => t.approved);
-  } catch {
-    return [];
-  }
-}
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <span
-          key={star}
-          style={{
-            color: star <= rating ? "#C8963E" : "rgba(250,250,247,0.2)",
-            fontSize: "1rem",
-          }}
-        >
-          ★
-        </span>
-      ))}
-    </div>
-  );
-}
+import { testimonials } from "@/data/testimonials";
 
 export default function TestimonialsPage() {
-  const testimonials = getApprovedTestimonials();
-
   return (
     <>
       {/* ── Hero header ── */}
@@ -74,18 +31,17 @@ export default function TestimonialsPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {testimonials.map((t) => (
                 <div
-                  key={t.id}
+                  key={`${t.name}-${t.quote.slice(0, 24)}`}
                   className="flex flex-col bg-navy rounded-2xl p-7 border border-cream/10 hover:border-gold/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
                 >
                   <div className="w-8 h-0.5 bg-gold mb-5" />
-                  <Stars rating={t.rating} />
-                  <blockquote className="text-cream/75 text-sm leading-relaxed mt-4 flex-1">
-                    &ldquo;{t.review}&rdquo;
+                  <blockquote className="text-cream/75 text-sm leading-relaxed flex-1">
+                    &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <footer className="mt-5 pt-4 border-t border-cream/10">
                     <p className="text-cream font-semibold text-sm">{t.name}</p>
-                    {t.role && (
-                      <p className="text-cream/45 text-xs mt-0.5">{t.role}</p>
+                    {t.context && (
+                      <p className="text-cream/45 text-xs mt-0.5">{t.context}</p>
                     )}
                   </footer>
                 </div>

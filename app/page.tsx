@@ -2,27 +2,7 @@ import Link from "next/link";
 import ChecklistForm from "./components/ChecklistForm";
 import DualStoryHero from "./components/DualStoryHero";
 import StatsStrip from "./components/StatsStrip";
-import { readFileSync } from "fs";
-import { join } from "path";
-
-interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  rating: number;
-  review: string;
-  approved: boolean;
-}
-
-function getFeaturedTestimonials(): Testimonial[] {
-  try {
-    const raw = readFileSync(join(process.cwd(), "data/testimonials.json"), "utf-8");
-    const all: Testimonial[] = JSON.parse(raw);
-    return all.filter((t) => t.approved).slice(0, 3);
-  } catch {
-    return [];
-  }
-}
+import { featuredTestimonials } from "@/data/testimonials";
 
 const BOOKING_URL = "https://cal.com/khwahishtaneja/free-15-min-intro-call";
 
@@ -45,8 +25,6 @@ const gatewayCards = [
 ];
 
 export default function Home() {
-  const featuredTestimonials = getFeaturedTestimonials();
-
   return (
     <>
       {/* ── A. DUAL STORY HERO (loads instantly on page open) ─────────── */}
@@ -95,60 +73,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── D. TESTIMONIALS ──────────────────────────────────────────── */}
-      {featuredTestimonials.length > 0 && (
-        <section className="bg-navy py-20 sm:py-28">
-          <div className="max-w-5xl mx-auto px-5 lg:px-8">
-            <p className="text-gold text-xs font-semibold uppercase tracking-widest text-center mb-3">
-              Client stories
-            </p>
-            <h2 className="font-heading text-cream text-3xl sm:text-4xl font-bold text-center mb-14">
-              What My Clients Say
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredTestimonials.map((t) => (
-                <div
-                  key={t.id}
-                  className="flex flex-col bg-navy rounded-2xl p-7 border border-cream/10 hover:border-gold/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
-                >
-                  <div className="w-8 h-0.5 bg-gold mb-5" />
-                  <div className="flex gap-0.5 mb-4" aria-label={`${t.rating} out of 5 stars`}>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                        key={star}
-                        style={{
-                          color: star <= t.rating ? "#C8963E" : "rgba(250,250,247,0.2)",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <blockquote className="text-cream/75 text-sm leading-relaxed flex-1">
-                    &ldquo;{t.review}&rdquo;
-                  </blockquote>
-                  <footer className="mt-5 pt-4 border-t border-cream/10">
-                    <p className="text-cream font-semibold text-sm">{t.name}</p>
-                    {t.role && (
-                      <p className="text-cream/45 text-xs mt-0.5">{t.role}</p>
-                    )}
-                  </footer>
-                </div>
-              ))}
-            </div>
-            <p className="text-center mt-10">
-              <Link
-                href="/testimonials"
-                className="text-gold text-sm font-semibold hover:underline"
-              >
-                Read all reviews →
-              </Link>
-            </p>
-          </div>
-        </section>
-      )}
 
       {/* ── E. DIGITAL RESOURCES ─────────────────────────────────────── */}
       <section className="bg-navy py-20 sm:py-28">
@@ -217,6 +141,47 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ── E2. TESTIMONIALS (hidden until a featured testimonial exists) ─ */}
+      {featuredTestimonials.length > 0 && (
+        <section className="bg-navy border-t border-cream/10 py-20 sm:py-28">
+          <div className="max-w-5xl mx-auto px-5 lg:px-8">
+            <p className="text-gold text-xs font-semibold uppercase tracking-widest text-center mb-3">
+              Client stories
+            </p>
+            <h2 className="font-heading text-cream text-3xl sm:text-4xl font-bold text-center mb-14">
+              What My Clients Say
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredTestimonials.map((t) => (
+                <div
+                  key={`${t.name}-${t.quote.slice(0, 24)}`}
+                  className="flex flex-col bg-navy rounded-2xl p-7 border border-cream/10 hover:border-gold/35 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+                >
+                  <div className="w-8 h-0.5 bg-gold mb-5" />
+                  <blockquote className="text-cream/75 text-sm leading-relaxed flex-1">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <footer className="mt-5 pt-4 border-t border-cream/10">
+                    <p className="text-cream font-semibold text-sm">{t.name}</p>
+                    {t.context && (
+                      <p className="text-cream/45 text-xs mt-0.5">{t.context}</p>
+                    )}
+                  </footer>
+                </div>
+              ))}
+            </div>
+            <p className="text-center mt-10">
+              <Link
+                href="/testimonials"
+                className="text-gold text-sm font-semibold hover:underline"
+              >
+                Read all reviews →
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* ── F. FREE CHECKLIST ────────────────────────────────────────── */}
       <section id="checklist" className="bg-navy py-20 sm:py-28">
